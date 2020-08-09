@@ -1,22 +1,22 @@
-  @i
-  M=1
-  @ans
-  M=0
+@i
+M=1
+@ans
+M=0
 (LOOP)
-  @i
-  D=M
-  @R1
-  D=M-D
-  @END
-  D;JLT
-  @ans
-  D=M
-  @R0
-  D=M+D
-  @i
-  M=M+1
-  @LOOP
-  0;JMP
+@i
+D=M
+@R1
+D=M-D
+@END
+D;JLT
+@ans
+D=M
+@R0
+D=M+D
+@i
+M=M+1
+@LOOP
+0;JMP
 (END)
-  @END
-  0;JMP
+@END
+0;JMP
