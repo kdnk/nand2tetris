@@ -8,27 +8,56 @@
 
 // Put your code here.
 
-@i
-M=1
 @2
-M=0
+M=0 // R2 = 0
+
+@counter
+M=0 // counter = 0
+
 (LOOP)
-@i
-D=M
+@counter
+D=M // D = counter
 @0
-D=M-D
-D;JLT
+D=D-M // D = counter - R0
+@END
+D;JGE
 
 @1
-D=M
-@2
+D=M // D = R1
+@2 // R2 = R1 + R2
 M=D+M
 
-@i
-M=M+1
+@counter
+M=M+1 // i++
 @LOOP
 0;JMP
 
 (END)
 @END
 0;JMP
+
+
+// @R2
+// M=0        // R2 = 0 (since R1 >= 1)
+
+// @counter
+// M=0        // counter = 0
+
+// (LOOP)
+// @counter
+// D=M        // D = counter
+// @R1
+// D=D-M;     // D = counter - R1
+// @END
+// D;JGE      // if counter > R1 goto END
+// @counter
+// M=M+1      // counter ++
+// @R0
+// D=M        // D = R0
+// @R2
+// M=M+D      // R2 = R2 + R0
+// @LOOP
+// 0;JMP
+// (END)
+// @END
+// 0;JMP
