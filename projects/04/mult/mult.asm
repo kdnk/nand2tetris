@@ -12,20 +12,18 @@
 M=1
 @2
 M=0
-
 (LOOP)
-
 @i
 D=M
-@1
+@0
 D=M-D
-@END
 D;JLT
 
-@2
+@1
 D=M
-@0
-D=M+D
+@2
+M=D+M
+
 @i
 M=M+1
 @LOOP
