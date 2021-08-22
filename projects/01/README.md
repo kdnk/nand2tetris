@@ -13,3 +13,7 @@
 ## Xor
 
 <img width="700px" src="https://user-images.githubusercontent.com/15260226/130355294-1a7d7b1e-dbc2-4926-b5e6-053ab6d0f050.png" />
+
+## Mux
+
+<img width="800px" src="https://user-images.githubusercontent.com/15260226/130357518-209dc30c-32a9-4dc6-9995-526930f32777.png" />
