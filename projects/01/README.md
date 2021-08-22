@@ -16,4 +16,5 @@
 
 ## Mux
 
-<img width="800px" src="https://user-images.githubusercontent.com/15260226/130357921-70a7f640-a491-4525-a445-df8b9d69a083.png" />
+
+<img width="800px" src="https://user-images.githubusercontent.com/15260226/130357978-b029aef2-0cf4-41af-87a5-af13b2353a6e.png" />
