@@ -23,6 +23,6 @@ CHIP Mux {
     /* ======== Q /\ sel ======== */
     And(a=b, b=sel, out=out2);
 
-    /* ======== (P /\ not sel) /\ (Q /\ sel) ======== */
+    /* ======== (P /\ not sel) \/ (Q /\ sel) ======== */
     Or(a=out1, b=out2, out=out);
 }
