@@ -17,8 +17,8 @@ CHIP DMux {
 
     Nand(a=sel, b=sel, out=notsel); /* Not sel */
 
-    /* ======== a /\ not sel ======== */
+    /* ======== in /\ not sel == a ======== */
     And(a=in, b=notsel, out=a);
-    /* ======== b /\ sel ======== */
+    /* ======== in /\ sel == b ======== */
     And(a=in, b=sel, out=b);
 }
