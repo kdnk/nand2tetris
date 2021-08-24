@@ -18,3 +18,8 @@
 
 
 <img width="800px" src="https://user-images.githubusercontent.com/15260226/130357978-b029aef2-0cf4-41af-87a5-af13b2353a6e.png" />
+
+
+## DMux8Way
+
+<img width="800px" src="https://user-images.githubusercontent.com/15260226/130541706-330ed425-f139-49ff-b089-2a7e8e20c9ae.png" />
