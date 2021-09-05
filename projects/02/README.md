@@ -6,3 +6,7 @@
 
 <img width="500px" src="https://user-images.githubusercontent.com/15260226/132125287-db220acf-2d1f-4bc0-889a-1c701928387b.jpeg" />
 
+## FullAdder
+
+<img width="500px" src="https://user-images.githubusercontent.com/15260226/132126526-92622dae-bf77-4902-a6f6-b340458f0368.jpeg" />
+
