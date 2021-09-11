@@ -10,3 +10,7 @@
 
 <img width="500px" src="https://user-images.githubusercontent.com/15260226/132126526-92622dae-bf77-4902-a6f6-b340458f0368.jpeg" />
 
+## ALU
+
+- https://classes.engineering.wustl.edu/cse365/a2.php
+- http://web.archive.org/web/20190728101719/http://nand2tetris-questions-and-answers-forum.32033.n3.nabble.com/Sub-bus-of-an-internal-node-may-not-be-used-td4031198.html */
