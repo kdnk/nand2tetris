@@ -44,12 +44,14 @@ CHIP ALU {
     PARTS:
     // Put you code here:
     /* zx & nx */
-    Not16(in=x, out=negx);
-    Mux4Way16(a=x, b[0..15]=false, c=negx, d[0..15]=false, sel[0]=zx, sel[1]=nx, out=outx);
+    Mux16(a=x, b[0..15]=false, sel=zx, out=zerox);
+    Not16(in=zerox, out=negx);
+    Mux16(a=zerox, b=negx, sel=nx, out=outx);
 
     /* zy & ny */
-    Not16(in=y, out=negy);
-    Mux4Way16(a=y, b[0..15]=false, c=negy, d[0..15]=false, sel[0]=zy, sel[1]=ny, out=outy);
+    Mux16(a=y, b[0..15]=false, sel=zy, out=zeroy);
+    Not16(in=zeroy, out=negy);
+    Mux16(a=zeroy, b=negy, sel=ny, out=outy);
 
     /* f */
     Add16(a=outx, b=outy, out=plusxy); /* x + y */
