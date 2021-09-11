@@ -7,7 +7,7 @@
  * The ALU (Arithmetic Logic Unit).
  * Computes one of the following functions:
  * x+y, x-y, y-x, 0, 1, -1, x, y, -x, -y, !x, !y,
- * x+1, y+1, x-1, y-1, x&y, x|y on two 16-bit inputs, 
+ * x+1, y+1, x-1, y-1, x&y, x|y on two 16-bit inputs,
  * according to 6 input bits denoted zx,nx,zy,ny,f,no.
  * In addition, the ALU computes two 1-bit outputs:
  * if the ALU output == 0, zr is set to 1; otherwise zr is set to 0;
@@ -27,8 +27,8 @@
 // if (out < 0) set ng = 1
 
 CHIP ALU {
-    IN  
-        x[16], y[16],  // 16-bit inputs        
+    IN
+        x[16], y[16],  // 16-bit inputs
         zx, // zero the x input?
         nx, // negate the x input?
         zy, // zero the y input?
@@ -36,11 +36,36 @@ CHIP ALU {
         f,  // compute out = x + y (if 1) or x & y (if 0)
         no; // negate the out output?
 
-    OUT 
+    OUT
         out[16], // 16-bit output
         zr, // 1 if (out == 0), 0 otherwise
         ng; // 1 if (out < 0),  0 otherwise
 
     PARTS:
-   // Put you code here:
+    // Put you code here:
+    /* zx & nx */
+    Not16(in=x, out=negx);
+    Mux4Way16(a=x, b[0..15]=false, c=negx, d[0..15]=false, sel[0]=zx, sel[1]=nx, out=outx);
+
+    /* zy & ny */
+    Not16(in=y, out=negy);
+    Mux4Way16(a=y, b[0..15]=false, c=negy, d[0..15]=false, sel[0]=zy, sel[1]=ny, out=outy);
+
+    /* f */
+    Add16(a=outx, b=outy, out=plusxy); /* x + y */
+    And16(a=outx, b=outy, out=andxy); /* x & y */
+    Mux16(a=andxy, b=plusxy, sel=f, out=outf);
+
+    /* no */
+    Not16(in=outf, out=negoutf);
+    /* See: http://web.archive.org/web/20190728101719/http://nand2tetris-questions-and-answers-forum.32033.n3.nabble.com/Sub-bus-of-an-internal-node-may-not-be-used-td4031198.html */
+    Mux16(a=negoutf, b=outf, sel=no, out=out, out[0..7]=outno0, out[8..15]=outno1, out[15]=ngsel);
+
+    /* zr */
+    Or8Way(in=outno0, out=tmpzr0);
+    Or8Way(in=outno1, out=tmpzr1);
+    Or(a=tmpzr0, b=tmpzr1, out=zr);
+
+    /* ng */
+    Mux(a=false, b=true, sel=ngsel, out=ng);
 }
