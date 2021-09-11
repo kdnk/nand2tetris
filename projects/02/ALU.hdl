@@ -59,13 +59,11 @@ CHIP ALU {
     /* no */
     Not16(in=outf, out=negoutf);
     /* See: http://web.archive.org/web/20190728101719/http://nand2tetris-questions-and-answers-forum.32033.n3.nabble.com/Sub-bus-of-an-internal-node-may-not-be-used-td4031198.html */
-    Mux16(a=negoutf, b=outf, sel=no, out=out, out[0..7]=outno0, out[8..15]=outno1, out[15]=ngsel);
+    Mux16(a=outf, b=negoutf, sel=no, out=out, out[0..7]=outno0, out[8..15]=outno1, out[15]=ng);
 
     /* zr */
     Or8Way(in=outno0, out=tmpzr0);
     Or8Way(in=outno1, out=tmpzr1);
-    Or(a=tmpzr0, b=tmpzr1, out=zr);
-
-    /* ng */
-    Mux(a=false, b=true, sel=ngsel, out=ng);
+    Or(a=tmpzr0, b=tmpzr1, out=negzr);
+    Not(in=negzr, out=zr);
 }
