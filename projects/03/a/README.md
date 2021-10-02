@@ -9,3 +9,7 @@
 ## RAM64
 
 ![IMG_E70F5D5D7966-1](https://user-images.githubusercontent.com/15260226/135722191-2b8159dd-3dc7-402a-8edc-deb8742ec35c.jpeg)
+
+## PC(counter)
+
+![IMG_DB5669A0F339-1](https://user-images.githubusercontent.com/15260226/135725210-20f7a189-7617-4919-85d2-2216ea53bec0.jpeg)
