@@ -8,4 +8,4 @@
 
 ## RAM64
 
-![IMG_20015E0D48FC-1](https://user-images.githubusercontent.com/15260226/135722007-fe8d2235-e58a-4770-8d0d-14430ae958f1.jpeg)
+![IMG_E70F5D5D7966-1](https://user-images.githubusercontent.com/15260226/135722191-2b8159dd-3dc7-402a-8edc-deb8742ec35c.jpeg)
