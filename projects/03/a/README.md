@@ -13,3 +13,7 @@
 ## PC(counter)
 
 ![IMG_DB5669A0F339-1](https://user-images.githubusercontent.com/15260226/135725210-20f7a189-7617-4919-85d2-2216ea53bec0.jpeg)
+
+## RAM512
+
+![IMG_91913FF27598-1](https://user-images.githubusercontent.com/15260226/135741818-0272d7bf-9e00-4a6b-9ca8-534e9688a2e2.jpeg)
