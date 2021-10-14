@@ -42,7 +42,7 @@
         @count
         D=M
         @index // index = count
-        M=D
+        M=D-1 // 0 < index < 8191
         @SCREEN
         D=A
         @index // index = SCREEN + index
