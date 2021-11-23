@@ -35,17 +35,26 @@ export class Parser {
     }
   }
 
-  commandType(command: string): COMMAND_TYPES {
-    if (command.indexOf("@") === 0) {
+  commandType(): COMMAND_TYPES {
+    const currentCommand = this.commands[this.currentCommandIndex];
+    if (currentCommand.indexOf("@") === 0) {
       return "A_COMMAND";
-    } else if (command.indexOf("(") === 0) {
+    } else if (currentCommand.indexOf("(") === 0) {
       return "L_COMMAND";
     } else {
       return "C_COMMAND";
     }
   }
 
-  symbol() {
+  symbol(): string | undefined {
+    const currentCommand = this.commands[this.currentCommandIndex];
+    if (this.commandType() === "C_COMMAND") {
+      return;
+    } else if (this.commandType() === "A_COMMAND") {
+      return currentCommand.substring(1);
+    } else if (this.commandType() === "L_COMMAND") {
+      return currentCommand.substring(1, currentCommand.length - 1);
+    }
   }
 
   dest() {

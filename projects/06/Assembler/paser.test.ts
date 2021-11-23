@@ -16,7 +16,9 @@ describe("Parser", () => {
   });
 
   it("commandType run properly.", () => {
-    const received = parser.commandType("@xxx");
+    parser.commands = ["@AAA"];
+    parser.currentCommandIndex = 0;
+    const received = parser.commandType();
     const expected = "A_COMMAND";
 
     assertEquals(received, expected);
@@ -50,6 +52,24 @@ describe("Parser", () => {
       assertEquals(parser.currentCommandIndex, 100);
       parser.advance();
       assertEquals(parser.currentCommandIndex, 100);
+    });
+  });
+
+  describe("symbol", () => {
+    it("A_COMMAND", () => {
+      parser.commands = ["@AAA"];
+      parser.currentCommandIndex = 0;
+      assertEquals(parser.symbol(), "AAA");
+    });
+    it("L_COMMAND", () => {
+      parser.commands = ["(Xxx)"];
+      parser.currentCommandIndex = 0;
+      assertEquals(parser.symbol(), "Xxx");
+    });
+    it("C_COMMAND", () => {
+      parser.commands = ["D=A"];
+      parser.currentCommandIndex = 0;
+      assertEquals(parser.symbol(), undefined);
     });
   });
 });
