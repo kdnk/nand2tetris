@@ -1,4 +1,4 @@
-import { readAll } from "https://deno.land/std@0.114.0/streams/conversion.ts";
+import { readAllSync } from "https://deno.land/std@0.114.0/streams/conversion.ts";
 
 const COMMAND_TYPES = {
   A_COMMAND: "A_COMMAND",
@@ -6,38 +6,58 @@ const COMMAND_TYPES = {
   L_COMMAND: "L_COMMAND",
 };
 
-export async function initialize() {
-  const fileName = Deno.args[0];
-  const file = await Deno.open(fileName);
-  const decoder = new TextDecoder("utf-8");
-  const text = decoder.decode(await readAll(file));
-  console.log(text);
-}
+export class Parser {
+  commands: string[] = [];
+  currentCommandIndex: number = 0;
 
-function hasMoreCommands() {
-}
-
-function advance() {
-}
-
-export function commandType(command: string) {
-  if (command.indexOf("@") === 0) {
-    return COMMAND_TYPES.A_COMMAND;
-  } else if (command.indexOf("(") === 0) {
-    return COMMAND_TYPES.L_COMMAND;
-  } else {
-    return COMMAND_TYPES.C_COMMAND;
+  constructor(fileName: string) {
+    const file = Deno.openSync(fileName);
+    try {
+      const decoder = new TextDecoder("utf-8");
+      const text = decoder.decode(readAllSync(file));
+      this.commands = text.split(/\r?\n/).filter((line) => {
+        if (line.startsWith("//")) {
+          return false;
+        } else if (line === "") {
+          return false;
+        } else {
+          return true;
+        }
+      });
+    } finally {
+      Deno.close(file.rid);
+    }
   }
-}
 
-function symbol() {
-}
+  hasMoreCommands(): boolean {
+    return !!this.commands[this.currentCommandIndex];
+  }
 
-function dest() {
-}
+  advance() {
+    if (this.hasMoreCommands()) {
+      this.currentCommandIndex += 1;
+    }
+  }
 
-function comp() {
-}
+  commandType(command: string) {
+    if (command.indexOf("@") === 0) {
+      return COMMAND_TYPES.A_COMMAND;
+    } else if (command.indexOf("(") === 0) {
+      return COMMAND_TYPES.L_COMMAND;
+    } else {
+      return COMMAND_TYPES.C_COMMAND;
+    }
+  }
 
-function jump() {
+  symbol() {
+  }
+
+  dest() {
+  }
+
+  comp() {
+  }
+
+  jump() {
+  }
 }
