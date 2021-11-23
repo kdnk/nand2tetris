@@ -1,10 +1,6 @@
 import { readAllSync } from "https://deno.land/std@0.114.0/streams/conversion.ts";
 
-const COMMAND_TYPES = {
-  A_COMMAND: "A_COMMAND",
-  C_COMMAND: "C_COMMAND",
-  L_COMMAND: "L_COMMAND",
-};
+type COMMAND_TYPES = "A_COMMAND" | "C_COMMAND" | "L_COMMAND";
 
 export class Parser {
   commands: string[] = [];
@@ -39,13 +35,13 @@ export class Parser {
     }
   }
 
-  commandType(command: string) {
+  commandType(command: string): COMMAND_TYPES {
     if (command.indexOf("@") === 0) {
-      return COMMAND_TYPES.A_COMMAND;
+      return "A_COMMAND";
     } else if (command.indexOf("(") === 0) {
-      return COMMAND_TYPES.L_COMMAND;
+      return "L_COMMAND";
     } else {
-      return COMMAND_TYPES.C_COMMAND;
+      return "C_COMMAND";
     }
   }
 
