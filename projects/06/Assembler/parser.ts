@@ -36,10 +36,9 @@ export class Parser {
   }
 
   commandType(): COMMAND_TYPES {
-    const currentCommand = this.commands[this.currentCommandIndex];
-    if (currentCommand.indexOf("@") === 0) {
+    if (this.#currentCommand().indexOf("@") === 0) {
       return "A_COMMAND";
-    } else if (currentCommand.indexOf("(") === 0) {
+    } else if (this.#currentCommand().indexOf("(") === 0) {
       return "L_COMMAND";
     } else {
       return "C_COMMAND";
@@ -47,13 +46,15 @@ export class Parser {
   }
 
   symbol(): string | undefined {
-    const currentCommand = this.commands[this.currentCommandIndex];
     if (this.commandType() === "C_COMMAND") {
       return;
     } else if (this.commandType() === "A_COMMAND") {
-      return currentCommand.substring(1);
+      return this.#currentCommand().substring(1);
     } else if (this.commandType() === "L_COMMAND") {
-      return currentCommand.substring(1, currentCommand.length - 1);
+      return this.#currentCommand().substring(
+        1,
+        this.#currentCommand().length - 1,
+      );
     }
   }
 
@@ -64,5 +65,9 @@ export class Parser {
   }
 
   jump() {
+  }
+
+  #currentCommand() {
+    return this.commands[this.currentCommandIndex];
   }
 }
