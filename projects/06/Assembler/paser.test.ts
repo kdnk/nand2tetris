@@ -72,4 +72,91 @@ describe("Parser", () => {
       assertEquals(parser.symbol(), undefined);
     });
   });
+
+  describe("dest", () => {
+    it("A_COMMAND", () => {
+      parser.commands = ["@AAA"];
+      parser.currentCommandIndex = 0;
+      assertEquals(parser.dest(), undefined);
+    });
+    it("L_COMMAND", () => {
+      parser.commands = ["(Xxx)"];
+      parser.currentCommandIndex = 0;
+      assertEquals(parser.dest(), undefined);
+    });
+    it("C_COMMAND", () => {
+      parser.commands = ["D=A", "AMD=AM"];
+      parser.currentCommandIndex = 0;
+      assertEquals(parser.dest(), "D");
+      parser.currentCommandIndex = 1;
+      assertEquals(parser.dest(), "AMD");
+    });
+    it("C_COMMAND that doesn't have equal symbol", () => {
+      parser.commands = ["A", "AM"];
+      parser.currentCommandIndex = 0;
+      assertEquals(parser.dest(), "null");
+      parser.currentCommandIndex = 1;
+      assertEquals(parser.dest(), "null");
+    });
+  });
+
+  describe("comp", () => {
+    it("A_COMMAND", () => {
+      parser.commands = ["@AAA"];
+      parser.currentCommandIndex = 0;
+      assertEquals(parser.comp(), undefined);
+    });
+    it("L_COMMAND", () => {
+      parser.commands = ["(Xxx)"];
+      parser.currentCommandIndex = 0;
+      assertEquals(parser.comp(), undefined);
+    });
+    it("C_COMMAND", () => {
+      parser.commands = ["D=A;JGT"];
+      parser.currentCommandIndex = 0;
+      assertEquals(parser.comp(), "A");
+    });
+    it("C_COMMAND (without equal)", () => {
+      parser.commands = ["A;JGT"];
+      parser.currentCommandIndex = 0;
+      assertEquals(parser.comp(), "A");
+    });
+    it("C_COMMAND (without semicolon)", () => {
+      parser.commands = ["D=A"];
+      parser.currentCommandIndex = 0;
+      assertEquals(parser.comp(), "A");
+    });
+    it("C_COMMAND (only comp)", () => {
+      parser.commands = ["A"];
+      parser.currentCommandIndex = 0;
+      assertEquals(parser.comp(), "A");
+    });
+  });
+
+  describe("jump", () => {
+    it("A_COMMAND", () => {
+      parser.commands = ["@AAA"];
+      parser.currentCommandIndex = 0;
+      assertEquals(parser.jump(), undefined);
+    });
+    it("L_COMMAND", () => {
+      parser.commands = ["(Xxx)"];
+      parser.currentCommandIndex = 0;
+      assertEquals(parser.jump(), undefined);
+    });
+    it("C_COMMAND", () => {
+      parser.commands = ["D=A;JGT", "AM;JEQ"];
+      parser.currentCommandIndex = 0;
+      assertEquals(parser.jump(), "JGT");
+      parser.currentCommandIndex = 1;
+      assertEquals(parser.jump(), "JEQ");
+    });
+    it("C_COMMAND that doesn't have semicolon symbol", () => {
+      parser.commands = ["A", "D=A"];
+      parser.currentCommandIndex = 0;
+      assertEquals(parser.jump(), "null");
+      parser.currentCommandIndex = 1;
+      assertEquals(parser.jump(), "null");
+    });
+  });
 });

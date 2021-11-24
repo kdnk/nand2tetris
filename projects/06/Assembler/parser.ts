@@ -58,13 +58,57 @@ export class Parser {
     }
   }
 
-  dest() {
+  dest(): string | undefined {
+    if (this.commandType() === "C_COMMAND") {
+      if (this.#currentCommand().indexOf("=") < 0) {
+        return "null";
+      } else {
+        const [dest, _rest] = this.#currentCommand().split("=");
+        return dest;
+      }
+    } else {
+      return;
+    }
   }
 
   comp() {
+    if (this.commandType() === "C_COMMAND") {
+      if (this.#currentCommand().indexOf(";") < 0) {
+        if (this.#currentCommand().indexOf("=") < 0) {
+          // ex. A
+          return this.#currentCommand();
+        } else {
+          // ex. D=A
+          const [_dest, comp] = this.#currentCommand().split("=");
+          return comp;
+        }
+      } else {
+        if (this.#currentCommand().indexOf("=") < 0) {
+          // ex. A;JGT
+          const [comp, _jump] = this.#currentCommand().split(";");
+          return comp;
+        } else {
+          // ex. D=A;JGT
+          const [_dest, comp, _jump] = this.#currentCommand().split(/=|;/);
+          return comp;
+        }
+      }
+    } else {
+      return;
+    }
   }
 
   jump() {
+    if (this.commandType() === "C_COMMAND") {
+      if (this.#currentCommand().indexOf(";") < 0) {
+        return "null";
+      } else {
+        const [_rest, jump] = this.#currentCommand().split(";");
+        return jump;
+      }
+    } else {
+      return;
+    }
   }
 
   #currentCommand() {
