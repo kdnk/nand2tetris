@@ -25,7 +25,7 @@ function symbolFreeAssembler() {
     }
     parser.advance();
   }
-  console.log(lines);
+  Deno.writeTextFileSync("./Prog.hack", lines.join("\n"));
 }
 
 function decimalToBinary(num: number): string {

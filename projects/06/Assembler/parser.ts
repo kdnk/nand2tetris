@@ -22,7 +22,6 @@ export class Parser {
           return true;
         }
       });
-      console.log(`[parser.ts:23] this.commands: `, this.commands);
     } finally {
       Deno.close(file.rid);
     }
