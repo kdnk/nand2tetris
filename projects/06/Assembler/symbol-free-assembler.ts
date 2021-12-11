@@ -1,11 +1,23 @@
+import { parse } from "https://deno.land/std@0.117.0/flags/mod.ts";
+
 import { Parser } from "./parser.ts";
 import { Code, isComp0 } from "./code.ts";
+
+/* ex.
+~/go/src/github.com/kdnk/nand2tetris/projects/06 main*
+❯ deno run --allow-read --allow-write ./Assembler/symbol-free-assembler.ts --input ./add/Add.asm --output ./add/Add.hack
+*/
 
 symbolFreeAssembler();
 
 function symbolFreeAssembler() {
-  // const haskFile = Deno.openSync("./Prog.hack");
-  const parser = new Parser("./add/Add.asm");
+  const parsedArgs = parse(Deno.args);
+  if (!parsedArgs.input || !parsedArgs.output) {
+    throw new Error("no args");
+  }
+  const inputFilePath = parsedArgs.input;
+  const outputFilePath = parsedArgs.output;
+  const parser = new Parser(inputFilePath);
 
   const lines = [];
   while (parser.hasMoreCommands()) {
@@ -25,7 +37,7 @@ function symbolFreeAssembler() {
     }
     parser.advance();
   }
-  Deno.writeTextFileSync("./Prog.hack", lines.join("\n"));
+  Deno.writeTextFileSync(outputFilePath, lines.join("\n"));
 }
 
 function decimalToBinary(num: number): string {
