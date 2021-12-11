@@ -1,5 +1,7 @@
 import { readAllSync } from "https://deno.land/std@0.114.0/streams/conversion.ts";
 
+import { Comp, Dest, isComp, isDest, isJump, Jump } from "./code.ts";
+
 type COMMAND_TYPES = "A_COMMAND" | "C_COMMAND" | "L_COMMAND";
 
 export class Parser {
@@ -20,6 +22,7 @@ export class Parser {
           return true;
         }
       });
+      console.log(`[parser.ts:23] this.commands: `, this.commands);
     } finally {
       Deno.close(file.rid);
     }
@@ -45,9 +48,9 @@ export class Parser {
     }
   }
 
-  symbol(): string | undefined {
+  symbol() {
     if (this.commandType() === "C_COMMAND") {
-      return;
+      throw new Error("Don't call `symbol` for C_COMMAND.");
     } else if (this.commandType() === "A_COMMAND") {
       return this.#currentCommand().substring(1);
     } else if (this.commandType() === "L_COMMAND") {
@@ -55,63 +58,90 @@ export class Parser {
         1,
         this.#currentCommand().length - 1,
       );
+    } else {
+      throw new Error();
     }
   }
 
-  dest(): string | undefined {
+  dest(): Dest {
     if (this.commandType() === "C_COMMAND") {
       if (this.#currentCommand().indexOf("=") < 0) {
         return "null";
       } else {
         const [dest, _rest] = this.#currentCommand().split("=");
-        return dest;
+        return this.#validatedDest(dest);
       }
     } else {
-      return;
+      throw new Error();
     }
   }
 
-  comp() {
+  comp(): Comp {
     if (this.commandType() === "C_COMMAND") {
       if (this.#currentCommand().indexOf(";") < 0) {
         if (this.#currentCommand().indexOf("=") < 0) {
           // ex. A
-          return this.#currentCommand();
+          const comp = this.#currentCommand();
+          return this.#validatedComp(comp);
         } else {
           // ex. D=A
           const [_dest, comp] = this.#currentCommand().split("=");
-          return comp;
+          return this.#validatedComp(comp);
         }
       } else {
         if (this.#currentCommand().indexOf("=") < 0) {
           // ex. A;JGT
           const [comp, _jump] = this.#currentCommand().split(";");
-          return comp;
+          return this.#validatedComp(comp);
         } else {
           // ex. D=A;JGT
           const [_dest, comp, _jump] = this.#currentCommand().split(/=|;/);
-          return comp;
+          return this.#validatedComp(comp);
         }
       }
     } else {
-      return;
+      throw new Error();
     }
   }
 
-  jump() {
+  jump(): Jump {
     if (this.commandType() === "C_COMMAND") {
       if (this.#currentCommand().indexOf(";") < 0) {
         return "null";
       } else {
         const [_rest, jump] = this.#currentCommand().split(";");
-        return jump;
+        return this.#validatedJump(jump);
       }
     } else {
-      return;
+      throw new Error();
     }
   }
 
   #currentCommand() {
     return this.commands[this.currentCommandIndex];
+  }
+
+  #validatedComp(comp: string): Comp {
+    if (isComp(comp)) {
+      return comp;
+    } else {
+      throw new Error(`${comp} isn't in Comp`);
+    }
+  }
+
+  #validatedJump(jump: string): Jump {
+    if (isJump(jump)) {
+      return jump;
+    } else {
+      throw new Error(`${jump} isn't in Jump`);
+    }
+  }
+
+  #validatedDest(dest: string): Dest {
+    if (isDest(dest)) {
+      return dest;
+    } else {
+      throw new Error(`${dest} isn't in Dest`);
+    }
   }
 }

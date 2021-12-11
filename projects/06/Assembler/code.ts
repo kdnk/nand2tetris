@@ -54,11 +54,26 @@ const COMP_1_MAP = {
   "D|M": "010101",
 };
 
-function isComp0(
+export type Comp = keyof typeof COMP_0_MAP | keyof typeof COMP_1_MAP;
+export function isComp(comp: string): comp is Comp {
+  return Object.keys({ ...COMP_0_MAP, ...COMP_1_MAP }).includes(comp);
+}
+export function isComp0(
   comp: keyof typeof COMP_0_MAP | keyof typeof COMP_1_MAP,
 ): comp is keyof typeof COMP_0_MAP {
   return Object.keys(COMP_0_MAP).includes(comp);
 }
+
+export type Jump = keyof typeof JUMP_MAP;
+export function isJump(jump: string): jump is Jump {
+  return Object.keys(JUMP_MAP).includes(jump);
+}
+
+export type Dest = keyof typeof DEST_MAP;
+export function isDest(dest: string): dest is Dest {
+  return Object.keys(DEST_MAP).includes(dest);
+}
+
 
 export class Code {
   dest(dest: keyof typeof DEST_MAP) {
