@@ -9,7 +9,7 @@ export class SymbolTable {
   }
 
   contains(symbol: Symbol): boolean {
-    return !!this.table[symbol];
+    return this.table[symbol] !== undefined;
   }
 
   getAddress(symbol: Symbol): Address {

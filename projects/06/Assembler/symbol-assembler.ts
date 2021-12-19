@@ -53,12 +53,14 @@ function symbolAssember() {
   symbolTable.table = PRE_DEFINED_SYMBOL_MAP;
 
   // first path
+  let address1 = 0;
   const parser = new Parser(inputFilePath);
   while (parser.hasMoreCommands()) {
     if (parser.commandType() === "L_COMMAND") {
       const symbol = parser.symbol();
-      symbolTable.addEntry(symbol, parser.currentCommandIndex + 1);
+      symbolTable.addEntry(symbol, address1);
     } else {
+      address1++;
       // noop
     }
     parser.advance();
@@ -66,23 +68,21 @@ function symbolAssember() {
 
   // second path
   const lines = [];
-  let address = 16;
+  let address2 = 16;
   const parser2 = new Parser(inputFilePath);
-  console.log(`[symbol-assembler.ts:66] parser2.commands: `, parser2.commands);
-  debugger;
   while (parser2.hasMoreCommands()) {
     if (parser2.commandType() === "A_COMMAND") { // @XXX
       const symbol = parser2.symbol();
       if (Number.isNaN(Number(symbol)) /* == if symbol isn't number */) {
         if (symbolTable.contains(symbol)) {
-          const address = symbolTable.getAddress(symbol);
-          const binary = decimalToBinary(address);
+          const address2 = symbolTable.getAddress(symbol);
+          const binary = decimalToBinary(address2);
           lines.push(binary);
         } else {
-          symbolTable.addEntry(symbol, address);
-          const binary = decimalToBinary(address);
+          symbolTable.addEntry(symbol, address2);
+          const binary = decimalToBinary(address2);
           lines.push(binary);
-          address++;
+          address2++;
         }
       } else {
         const binary = decimalToBinary(Number(symbol));
@@ -90,14 +90,6 @@ function symbolAssember() {
       }
     } else if (parser2.commandType() === "C_COMMAND") { // dest = comp;jump
       const code = new Code();
-      console.log(
-        `[symbol-assembler.ts:86] parser2.commandType(): `,
-        parser2.commandType(),
-      );
-      console.log(
-        `[symbol-assembler.ts:90] parser2.commands[parser2.currentCommandIndex]: `,
-        parser2.commands[parser2.currentCommandIndex],
-      );
       const orderType: typeof A_OEDER | typeof C_ORDER = isComp0(parser2.comp())
         ? A_OEDER
         : C_ORDER;
