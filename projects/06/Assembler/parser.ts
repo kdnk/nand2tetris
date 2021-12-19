@@ -21,6 +21,9 @@ export class Parser {
         } else {
           return true;
         }
+      }).map((line) => {
+        const program = line.split(" ").filter((chank) => (!!chank))[0];
+        return program;
       });
     } finally {
       Deno.close(file.rid);
