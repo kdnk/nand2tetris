@@ -47,7 +47,7 @@ function symbolAssember() {
     "R13": 13,
     "R14": 14,
     "R15": 15,
-    "SCREEN": 16348,
+    "SCREEN": 16384,
     "KBD": 24576,
   };
   symbolTable.table = PRE_DEFINED_SYMBOL_MAP;
