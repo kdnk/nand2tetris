@@ -10,6 +10,9 @@ import { Code, isComp0 } from "./code.ts";
 
 symbolFreeAssembler();
 
+const A_OEDER = 0;
+const C_ORDER = 1;
+
 function symbolFreeAssembler() {
   const parsedArgs = parse(Deno.args);
   if (!parsedArgs.input || !parsedArgs.output) {
@@ -27,8 +30,10 @@ function symbolFreeAssembler() {
       lines.push(binary);
     } else if (parser.commandType() === "C_COMMAND") {
       const code = new Code();
-      const isA: 0 | 1 = isComp0(parser.comp()) ? 0 : 1;
-      const binary = `111${isA}${code.comp(parser.comp())}${
+      const orderType: typeof A_OEDER | typeof C_ORDER = isComp0(parser.comp())
+        ? A_OEDER
+        : C_ORDER;
+      const binary = `111${orderType}${code.comp(parser.comp())}${
         code.dest(parser.dest())
       }${code.jump(parser.jump())}`;
       lines.push(binary);
