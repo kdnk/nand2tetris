@@ -8,10 +8,10 @@ import { Code, isComp0 } from "./code.ts";
 ❯ deno run --allow-read --allow-write ./Assembler/symbol-free-assembler.ts --input ./add/Add.asm --output ./add/Add.hack
 */
 
-symbolFreeAssembler();
-
 const A_OEDER = 0;
 const C_ORDER = 1;
+
+symbolFreeAssembler();
 
 function symbolFreeAssembler() {
   const parsedArgs = parse(Deno.args);
