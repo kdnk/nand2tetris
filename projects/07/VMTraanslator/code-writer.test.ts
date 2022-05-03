@@ -71,5 +71,138 @@ describe("CodeWriter", () => {
         "M=M+1",
       ]);
     });
+    it("eq", () => {
+      assertEquals(codeWriter.arithmeticToAssembly("eq"), [
+        "@SP",
+        "M=M-1",
+        "@SP",
+        "A=M",
+        "D=M",
+        "@SP",
+        "M=M-1",
+        "@SP",
+        "A=M",
+        "A=M",
+        "D=A-D",
+        "@LABEL1",
+        "D;JEQ",
+        "@SP",
+        "M=0",
+        "@LABEL2",
+        "0;JMP",
+        "(LABEL1)",
+        "@SP",
+        "M=-1",
+        "(LABEL2)",
+        "@SP",
+        "M=M+1",
+      ]);
+    });
+    it("lt", () => {
+      assertEquals(codeWriter.arithmeticToAssembly("lt"), [
+        "@SP",
+        "M=M-1",
+        "@SP",
+        "A=M",
+        "D=M",
+        "@SP",
+        "M=M-1",
+        "@SP",
+        "A=M",
+        "A=M",
+        "D=A-D",
+        "@LABEL1",
+        "D;JLT",
+        "@SP",
+        "M=0",
+        "@LABEL2",
+        "0;JMP",
+        "(LABEL1)",
+        "@SP",
+        "M=-1",
+        "(LABEL2)",
+        "@SP",
+        "M=M+1",
+      ]);
+    });
+    it("gt", () => {
+      assertEquals(codeWriter.arithmeticToAssembly("gt"), [
+        "@SP",
+        "M=M-1",
+        "@SP",
+        "A=M",
+        "D=M",
+        "@SP",
+        "M=M-1",
+        "@SP",
+        "A=M",
+        "A=M",
+        "D=A-D",
+        "@LABEL1",
+        "D;JGT",
+        "@SP",
+        "M=0",
+        "@LABEL2",
+        "0;JMP",
+        "(LABEL1)",
+        "@SP",
+        "M=-1",
+        "(LABEL2)",
+        "@SP",
+        "M=M+1",
+      ]);
+    });
+    it("and", () => {
+      assertEquals(codeWriter.arithmeticToAssembly("and"), [
+        "@SP",
+        "M=M-1",
+        "@SP",
+        "A=M",
+        "D=M",
+        "@SP",
+        "M=M-1",
+        "@SP",
+        "A=M",
+        "A=M",
+        "D=A&D",
+        "@SP",
+        "M=D",
+        "@SP",
+        "M=M+1",
+      ]);
+    });
+    it("or", () => {
+      assertEquals(codeWriter.arithmeticToAssembly("or"), [
+        "@SP",
+        "M=M-1",
+        "@SP",
+        "A=M",
+        "D=M",
+        "@SP",
+        "M=M-1",
+        "@SP",
+        "A=M",
+        "A=M",
+        "D=A|D",
+        "@SP",
+        "M=D",
+        "@SP",
+        "M=M+1",
+      ]);
+    });
+    it("not", () => {
+      assertEquals(codeWriter.arithmeticToAssembly("not"), [
+        "@SP",
+        "M=M-1",
+        "@SP",
+        "A=M",
+        "D=M",
+        "D=!D",
+        "@SP",
+        "M=D",
+        "@SP",
+        "M=M+1",
+      ]);
+    });
   });
 });

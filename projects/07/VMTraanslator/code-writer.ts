@@ -10,20 +10,33 @@ type SEGMENT =
   | "pointer"
   | "temp";
 
+type COMMAND =
+  | "add"
+  | "sub"
+  | "neg"
+  | "eq"
+  | "gt"
+  | "lt"
+  | "and"
+  | "or"
+  | "not";
+
 export class CodeWriter {
   fileName: string;
   assemblies: string[];
+  labelNumber: number;
 
   constructor(fileName: string) {
     this.fileName = fileName;
     this.assemblies = [];
+    this.labelNumber = 0;
   }
 
   setFileName(fileName: string) {
     this.fileName = fileName;
   }
 
-  writeArithmetic(command: string) {
+  writeArithmetic(command: COMMAND) {
     // Deno.writeTextFileSync(this.fileName);
   }
 
@@ -34,7 +47,7 @@ export class CodeWriter {
   ) {
   }
 
-  arithmeticToAssembly(command: string) {
+  arithmeticToAssembly(command: COMMAND): string[] {
     if (command === "add") {
       this.#binary("A+D");
       return this.assemblies;
@@ -44,6 +57,26 @@ export class CodeWriter {
     } else if (command === "neg") {
       this.#unary("-D");
       return this.assemblies;
+    } else if (command === "eq") {
+      this.#compare("JEQ");
+      return this.assemblies;
+    } else if (command === "lt") {
+      this.#compare("JLT");
+      return this.assemblies;
+    } else if (command === "gt") {
+      this.#compare("JGT");
+      return this.assemblies;
+    } else if (command === "and") {
+      this.#binary("A&D");
+      return this.assemblies;
+    } else if (command === "or") {
+      this.#binary("A|D");
+      return this.assemblies;
+    } else if (command === "not") {
+      this.#unary("!D");
+      return this.assemblies;
+    } else {
+      throw new Error(`#{command}`);
     }
   }
 
@@ -66,6 +99,28 @@ export class CodeWriter {
 
     this.#cCommand("D", comp, undefined);
     this.#compToStack("D");
+    this.#incrementStackPointer();
+  }
+
+  #compare(jump: string): void {
+    // false: 0
+    // true: -1
+    this.#decrementStackPointer();
+    this.#stackToDest("D"); // D=M[SP]
+
+    this.#decrementStackPointer();
+    this.#stackToDest("A"); // A=M[SP]
+
+    this.#cCommand("D", "A-D", undefined); // D=A-D
+    const labelEq = this.#jump("D", jump); // D;jump
+
+    this.#compToStack("0"); // M[SP]=0
+    const labelNe = this.#jump("0", "JMP"); // 0;JMP
+    this.#lCommand(labelEq); // (labelEq)
+
+    this.#compToStack("-1"); // M[SP]=-1
+    this.#lCommand(labelNe); // (labelNe)
+
     this.#incrementStackPointer();
   }
 
@@ -100,6 +155,10 @@ export class CodeWriter {
     this.assemblies.push(output);
   }
 
+  #lCommand(label: string): void {
+    this.assemblies.push(`(${label})`);
+  }
+
   #loadStackPointer() {
     // SPというポインタに格納されている値にアクセスするための準備
     // M[SP] できるようになるということ
@@ -116,5 +175,17 @@ export class CodeWriter {
   #compToStack(comp: string) {
     this.#aCommand("SP"); // A = address of SP
     this.#cCommand("M", comp, undefined);
+  }
+
+  #jump(comp: string, jump: string) {
+    const label = this.#newLabel();
+    this.#aCommand(label); // @label
+    this.#cCommand(undefined, comp, jump);
+    return label;
+  }
+
+  #newLabel(): string {
+    this.labelNumber += 1;
+    return `LABEL${this.labelNumber}`;
   }
 }
