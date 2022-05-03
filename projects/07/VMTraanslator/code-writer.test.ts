@@ -212,6 +212,23 @@ describe("CodeWriter", () => {
         "D=A",
         "@SP",
         "M=D",
+        "@SP",
+        "M=M+1",
+      ]);
+    });
+
+    it("push local 100", () => {
+      assertEquals(codeWriter.pushPopToAssembly("C_PUSH", "local", 100), [
+        "@100",
+        "D=A",
+        "A=LCL",
+        "A=M",
+        "A=D+A",
+        "D=M",
+        "@SP",
+        "M=D",
+        "@SP",
+        "M=M+1",
       ]);
     });
   });

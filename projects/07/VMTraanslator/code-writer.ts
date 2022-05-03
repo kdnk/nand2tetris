@@ -216,6 +216,20 @@ export class CodeWriter {
       // D=M[local + index]
       // @SP
       // M[SP]=D
+
+      // load segment
+      this.#aCommand(index.toString()); // A=index
+      this.#cCommand("D", "A", undefined); // D=A
+      this.#cCommand("A", "LCL", undefined); // A=LCL
+      this.#cCommand("A", "M", undefined); // A=M[LCL]
+      this.#cCommand("A", "D+A", undefined); // A=index+LCL
+
+      // load value in segment
+      this.#cCommand("D", "M", undefined); // D=M[index+LCL]
+
+      // assign value to sp
+      this.#compToStack("D");
     }
+    this.#incrementStackPointer();
   }
 }
