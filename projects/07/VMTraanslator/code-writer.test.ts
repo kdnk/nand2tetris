@@ -205,4 +205,14 @@ describe("CodeWriter", () => {
       ]);
     });
   });
+  describe("pushPopToAssembly", () => {
+    it("push constant 100", () => {
+      assertEquals(codeWriter.pushPopToAssembly("C_PUSH", "constant", 100), [
+        "@100",
+        "D=A",
+        "@SP",
+        "M=D",
+      ]);
+    });
+  });
 });

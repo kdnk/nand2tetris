@@ -45,6 +45,23 @@ export class CodeWriter {
     segment: SEGMENT,
     index: number,
   ) {
+    if (command === "C_PUSH") {
+      this.#push(segment, index);
+      return this.assemblies;
+    }
+  }
+
+  pushPopToAssembly(
+    command: Extract<COMMAND_TYPE, "C_POP" | "C_PUSH">,
+    segment: SEGMENT,
+    index: number,
+  ): string[] {
+    if (command === "C_PUSH") {
+      this.#push(segment, index);
+      return this.assemblies;
+    } else {
+      throw new Error(`#{command}`);
+    }
   }
 
   arithmeticToAssembly(command: COMMAND): string[] {
@@ -85,7 +102,7 @@ export class CodeWriter {
   #unary(comp: string): void {
     this.#decrementStackPointer();
     this.#stackToDest("D"); // D=M[SP]
-    this.#cCommand("D", comp, undefined); // D = comp (このcompではDが使われているので上書きしているようにみえるが問題ない)
+    this.#cCommand("D", comp, undefined); // D = comp (このcompではDが使われているので、上書きしているようにみえるが問題ない)
     this.#compToStack("D");
     this.#incrementStackPointer();
   }
@@ -174,7 +191,7 @@ export class CodeWriter {
 
   #compToStack(comp: string) {
     this.#aCommand("SP"); // A = address of SP
-    this.#cCommand("M", comp, undefined);
+    this.#cCommand("M", comp, undefined); // M[SP] = comp
   }
 
   #jump(comp: string, jump: string) {
@@ -187,5 +204,18 @@ export class CodeWriter {
   #newLabel(): string {
     this.labelNumber += 1;
     return `LABEL${this.labelNumber}`;
+  }
+
+  #push(segment: SEGMENT, index: number) {
+    if (segment === "constant") {
+      this.#aCommand(index.toString()); // @index
+      this.#cCommand("D", "A", undefined); // D=A
+      this.#compToStack("D"); // M[SP]=D
+    } else if (segment === "local") {
+      // @(local + index)
+      // D=M[local + index]
+      // @SP
+      // M[SP]=D
+    }
   }
 }
