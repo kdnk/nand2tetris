@@ -7,7 +7,7 @@ import {
 
 import { Parser } from "./parser.ts";
 
-const FILE_PATH = "./projects/07/MemoryAccess/BasicTest/BasicTest.vm";
+const FILE_PATH = "./projects/07/StackArithmetic/SimpleAdd/SimpleAdd.vm";
 
 describe("Parser", () => {
   let parser: Parser;

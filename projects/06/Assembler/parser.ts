@@ -2,7 +2,7 @@ import { readAllSync } from "https://deno.land/std@0.114.0/streams/conversion.ts
 
 import { Comp, Dest, isComp, isDest, isJump, Jump } from "./code.ts";
 
-type COMMAND_TYPES = "A_COMMAND" | "C_COMMAND" | "L_COMMAND";
+type COMMAND_TYPE = "A_COMMAND" | "C_COMMAND" | "L_COMMAND";
 
 export class Parser {
   commands: string[] = [];
@@ -40,7 +40,7 @@ export class Parser {
     }
   }
 
-  commandType(): COMMAND_TYPES {
+  commandType(): COMMAND_TYPE {
     if (this.#currentCommand().indexOf("@") === 0) {
       return "A_COMMAND";
     } else if (this.#currentCommand().indexOf("(") === 0) {

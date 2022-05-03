@@ -1,6 +1,6 @@
 import { readAllSync } from "https://deno.land/std@0.114.0/streams/conversion.ts";
 
-type COMMAND_TYPES =
+export type COMMAND_TYPE =
   | "C_ARITHMETIC"
   | "C_PUSH"
   | "C_POP"
@@ -21,7 +21,7 @@ export class Parser {
     try {
       const decoder = new TextDecoder("utf-8");
       const text = decoder.decode(readAllSync(file));
-      // console.log("[parser.ts:24] text: ", text);
+      console.log("[parser.ts:24] text: ", text);
       this.commands = text.split(/\r?\n/).filter((line) => {
         if (line.startsWith("//")) {
           return false;
@@ -46,7 +46,7 @@ export class Parser {
     }
   }
 
-  commandType(): COMMAND_TYPES {
+  commandType(): COMMAND_TYPE {
     if (this.#currentCommand()?.startsWith("pop")) {
       return "C_POP";
     } else if (this.#currentCommand()?.startsWith("push")) {
