@@ -231,5 +231,50 @@ describe("CodeWriter", () => {
         "M=M+1",
       ]);
     });
+
+    it("push argument 100", () => {
+      assertEquals(codeWriter.pushPopToAssembly("C_PUSH", "argument", 100), [
+        "@100",
+        "D=A",
+        "A=ARG",
+        "A=M",
+        "A=D+A",
+        "D=M",
+        "@SP",
+        "M=D",
+        "@SP",
+        "M=M+1",
+      ]);
+    });
+
+    it("push this 100", () => {
+      assertEquals(codeWriter.pushPopToAssembly("C_PUSH", "this", 100), [
+        "@100",
+        "D=A",
+        "A=THIS",
+        "A=M",
+        "A=D+A",
+        "D=M",
+        "@SP",
+        "M=D",
+        "@SP",
+        "M=M+1",
+      ]);
+    });
+
+    it("push that 100", () => {
+      assertEquals(codeWriter.pushPopToAssembly("C_PUSH", "that", 100), [
+        "@100",
+        "D=A",
+        "A=THAT",
+        "A=M",
+        "A=D+A",
+        "D=M",
+        "@SP",
+        "M=D",
+        "@SP",
+        "M=M+1",
+      ]);
+    });
   });
 });

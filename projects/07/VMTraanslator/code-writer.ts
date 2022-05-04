@@ -229,6 +229,60 @@ export class CodeWriter {
 
       // assign value to sp
       this.#compToStack("D");
+    } else if (segment === "argument") {
+      // @(local + index)
+      // D=M[local + index]
+      // @SP
+      // M[SP]=D
+
+      // load segment
+      this.#aCommand(index.toString()); // A=index
+      this.#cCommand("D", "A", undefined); // D=A
+      this.#cCommand("A", "ARG", undefined); // A=ARG
+      this.#cCommand("A", "M", undefined); // A=M[ARG]
+      this.#cCommand("A", "D+A", undefined); // A=index+ARG
+
+      // load value in segment
+      this.#cCommand("D", "M", undefined); // D=M[index+ARG]
+
+      // assign value to sp
+      this.#compToStack("D");
+    } else if (segment === "this") {
+      // @(local + index)
+      // D=M[local + index]
+      // @SP
+      // M[SP]=D
+
+      // load segment
+      this.#aCommand(index.toString()); // A=index
+      this.#cCommand("D", "A", undefined); // D=A
+      this.#cCommand("A", "THIS", undefined); // A=THIS
+      this.#cCommand("A", "M", undefined); // A=M[THIS]
+      this.#cCommand("A", "D+A", undefined); // A=index+THIS
+
+      // load value in segment
+      this.#cCommand("D", "M", undefined); // D=M[index+THIS]
+
+      // assign value to sp
+      this.#compToStack("D");
+    } else if (segment === "that") {
+      // @(local + index)
+      // D=M[local + index]
+      // @SP
+      // M[SP]=D
+
+      // load segment
+      this.#aCommand(index.toString()); // A=index
+      this.#cCommand("D", "A", undefined); // D=A
+      this.#cCommand("A", "THAT", undefined); // A=THAT
+      this.#cCommand("A", "M", undefined); // A=M[THAT]
+      this.#cCommand("A", "D+A", undefined); // A=index+THAT
+
+      // load value in segment
+      this.#cCommand("D", "M", undefined); // D=M[index+THAT]
+
+      // assign value to sp
+      this.#compToStack("D");
     }
     this.#incrementStackPointer();
   }
