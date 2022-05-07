@@ -276,5 +276,16 @@ describe("CodeWriter", () => {
         "M=M+1",
       ]);
     });
+
+    it("push pointer 1", () => {
+      assertEquals(codeWriter.pushPopToAssembly("C_PUSH", "pointer", 1), [
+        "@R4",
+        "D=M",
+        "@SP",
+        "M=D",
+        "@SP",
+        "M=M+1",
+      ]);
+    });
   });
 });

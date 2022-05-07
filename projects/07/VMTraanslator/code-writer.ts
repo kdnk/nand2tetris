@@ -280,10 +280,29 @@ export class CodeWriter {
 
       // load value in segment
       this.#cCommand("D", "M", undefined); // D=M[index+THAT]
-
       // assign value to sp
+      this.#compToStack("D");
+    } else if (segment === "pointer" || segment === "temp") {
+      // @(pointer + index)
+      const registerName = `R${this.#regbase(segment) + index}`;
+      this.#aCommand(registerName);
+
+      // D=M[pointer + index]
+      this.#cCommand("D", "M", undefined);
+
+      // @SP
+      // M[SP]=D
       this.#compToStack("D");
     }
     this.#incrementStackPointer();
+  }
+
+  #regbase(kind: "reg" | "pointer" | "temp") {
+    const regBase = {
+      reg: 0,
+      pointer: 3,
+      temp: 5,
+    };
+    return regBase[kind];
   }
 }
